@@ -239,7 +239,7 @@
 
 <p>One can use the personal SSL certificate to be used</p>
 
-<h2 id="step-1-generate-a-self-signed-certificate">Step 1 - Generate A self signed certificate</h2>
+<h2 id="step-1-generate-a-self-signed-certificate">Step 1 - Generate a self signed certificate</h2>
 
 <pre><code>keytool.exe -genkey -alias wiremock -keyalg RSA -keysize 1024  -validity 365 -keypass password  -keystore wiremockKS.jks -storepass password
 </code></pre>
@@ -262,14 +262,58 @@ Is CN=localhost, OU=some unit, O=awesome org, L=mel, ST=VIC, C=AU correct?
   [no]:  yes
 </code></pre>
 
-<h2 id="step-2-start-wiremock-with-this-newly-generated-keystore">Step 2 - Start wiremock with this newly generated keystore</h2>
+<h2 id="step-2-export-the-certificate-later-to-be-imported-in-java-s-default-key-store">Step 2 -  Export the certificate (later to be imported in Java&rsquo;s default key store)</h2>
 
-<pre><code>java -jar wiremock-standalone-2.6.0.jar --https-port 9099 -v --https-keystore ./wiremockKS.jks
+<pre><code>keytool -export -keystore wiremockKS.jks -alias wiremock -file wiremock-pub.cer
 </code></pre>
 
 <h2 id="step-3-import-public-key-in-java-s-default-truststore">Step 3 - Import public key in Java&rsquo;s default truststore</h2>
 
-<pre><code>jdk1.8.0_91\jre\lib\security
+<pre><code>keytool -import -file wiremock-pub.cer -alias wiremock -keystore  %JAVA_HOME%\jre\lib\security\cacerts
+</code></pre>
+
+<pre><code>Enter keystore password:
+Owner: CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=AU
+Issuer: CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=AU
+Serial number: 4c87a4a0
+Valid from: Fri Feb 16 13:30:03 AEDT 2018 until: Sat Feb 16 13:30:03 AEDT 2019
+Certificate fingerprints:
+         MD5:  76:03:32:8F:89:81:34:D6:78:64:5C:AF:02:6C:24:28
+         SHA1: 83:53:20:84:88:1A:F4:0F:67:8A:69:51:6D:A7:FA:63:F6:46:7C:B2
+         SHA256: 69:81:EE:87:4F:58:AE:A2:40:B8:CF:A5:41:5E:25:7C:DE:77:42:F0:3C:5E:09:83:8D:EB:05:7A:D5:9D:AF:FF
+         Signature algorithm name: SHA256withRSA
+         Version: 3
+
+Extensions:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 11 5D 9E 06 42 B7 2C 9B   AA 97 A7 C9 3C 9F 55 02  .]..B.,.....&lt;.U.
+0010: FA FE 13 12                                        ....
+]
+]
+
+Trust this certificate? [no]:  yes
+Certificate was added to keystore
+</code></pre>
+
+<p>Default password for java&rsquo;s keystore is <strong>changeit</strong></p>
+
+<h2 id="step-5-start-wiremock-with-the-newly-generated-keystore-in-step-1">Step 5 Start wiremock with the newly generated keystore in Step 1</h2>
+
+<pre><code>java -jar wiremock-standalone-2.6.0.jar --https-port 9099 -v --https-keystore .\wiremockKS.jks
+</code></pre>
+
+<h2 id="step-6-test-with-a-client">Step 6 - Test with a client</h2>
+
+<p>I tested with quick and dirty Groovy script and voila..got the response</p>
+
+<pre><code>String postResult
+((HttpURLConnection)new URL('https://localhost:9099/test').openConnection()).with {
+    requestMethod = 'POST'
+    postResult = inputStream.text
+}
 </code></pre>
 
 
