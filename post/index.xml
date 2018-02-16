@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Welcome to my blog</title>
+    <title>Posts on The Dev Haus</title>
     <link>https://thedevhaus.github.io/post/</link>
-    <description>Recent content in Posts on Welcome to my blog</description>
+    <description>Recent content in Posts on The Dev Haus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 10 Feb 2018 00:00:00 +0000</lastBuildDate>
@@ -18,7 +18,6 @@
       
       <guid>https://thedevhaus.github.io/post/my-first-post/</guid>
       <description>Introduction Wiremock is an awesome HTTP stubbing librabry which can be ued to mock end points. It is super simple and can be used as a standalone server. The beauty is that it can be used to stub SSL endpoints making it very versatile and easier to use.
-One can use the personal SSL certificate to be used
 Step 1 - Generate a self signed certificate keytool.exe -genkey -alias wiremock -keyalg RSA -keysize 1024 -validity 365 -keypass password -keystore wiremockKS.</description>
     </item>
     
