@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.35" />
 
-  <title>REST API With Spring and Jersey &middot; Welcome to my blog</title>
+  <title>How to use Wiremock with HTTPS &middot; Welcome to my blog</title>
 
   
   
@@ -64,7 +64,7 @@
 <div id="menu">
 
   
-  <a class="pure-menu-heading brand" href="https://thedevhaus.github.io/">Ashish</a>
+  <a class="pure-menu-heading brand" href="https://thedevhaus.github.io/">TheDevHaus</a>
 
 
   <div class="pure-menu">
@@ -196,7 +196,7 @@
 
   <div>
   <div class="small-print">
-    <small>&copy; 2016. All rights reserved.</small>
+    <small></small>
   </div>
   <div class="small-print">
     <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
@@ -211,7 +211,7 @@
 
 
 <div class="header">
-  <h1>REST API With Spring and Jersey</h1>
+  <h1>How to use Wiremock with HTTPS</h1>
   <h2></h2>
 </div>
 <div class="content">
@@ -220,7 +220,7 @@
 
   <div>
     <i class="fa fa-calendar fa-fw"></i>
-    <time>28 Sep 2014, 00:00</time>
+    <time>10 Feb 2018, 00:00</time>
   </div>
 
   
@@ -235,60 +235,42 @@
 
 <h2 id="introduction">Introduction</h2>
 
-<p>This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with <a href="http://www.html.com">HTML</a>, the bash command line, and that you are comfortable using Markdown to format content. I&rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&rsquo;t cover using CSS to style your theme.</p>
+<p><a href="https://www.wiremock.com">Wiremock</a> is an awesome HTTP stubbing librabry which can be ued to mock end points. It is super simple and can be used as a standalone server. The beauty is that it can be used to stub SSL endpoints making it very versatile and easier to use.</p>
 
-<p>Here&rsquo;s an example:</p>
+<p>One can use the personal SSL certificate to be used</p>
 
-<pre><code>import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import javax.ws.rs.ext.ContextResolver
-import javax.ws.rs.ext.Provider
-/**
- * Created by Ashish.Nayyar-b on 2/1/2018.
- */
+<h2 id="step-1-generate-a-self-signed-certificate">Step 1 - Generate A self signed certificate</h2>
 
-@Provider
-class AppConfiguration implements ContextResolver&lt;ObjectMapper&gt; {
-	
-	private static final ObjectMapper mapper = new ObjectMapper()
-    
-    static {
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES)
-        mapper.disable SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
-        mapper.disable DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
-    	 /*mapper.enable(SerializationFeature.WRAP_ROOT_VALUE)*/
-    }
-     
-    @Override
-    ObjectMapper getContext(Class&lt;?&gt; type) {
-        return mapper
-    } 
-
-}
+<pre><code>keytool.exe -genkey -alias wiremock -keyalg RSA -keysize 1024  -validity 365 -keypass password  -keystore wiremockKS.jks -storepass password
 </code></pre>
 
-<h2 id="some-definitions">Some Definitions</h2>
+<p>This will create a file named <code>wiremockKS.jks</code> with a self signed certificate. Add the correct hostname for certificate to be uesd on host. For Ex the following certificate can be used for <code>localhost</code> :</p>
 
-<p>There are a few concepts that you need to understand before creating a theme.</p>
+<pre><code>What is your first and last name?
+  [Unknown]:  localhost
+What is the name of your organizational unit?
+  [Unknown]:  some unit
+What is the name of your organization?
+  [Unknown]:  awesome org
+What is the name of your City or Locality?
+  [Unknown]:  mel
+What is the name of your State or Province?
+  [Unknown]:  VIC
+What is the two-letter country code for this unit?
+  [Unknown]:  AU
+Is CN=localhost, OU=some unit, O=awesome org, L=mel, ST=VIC, C=AU correct?
+  [no]:  yes
+</code></pre>
 
-<h3 id="skins">Skins</h3>
+<h2 id="step-2-start-wiremock-with-this-newly-generated-keystore">Step 2 - Start wiremock with this newly generated keystore</h2>
 
-<p>Skins are the files responsible for the look and feel of your site. It’s the CSS that controls colors and fonts, it’s the Javascript that determines actions and reactions. It’s also the rules that Hugo uses to transform your content into the HTML that the site will serve to visitors.</p>
+<pre><code>java -jar wiremock-standalone-2.6.0.jar --https-port 9099 -v --https-keystore ./wiremockKS.jks
+</code></pre>
 
-<p>You have two ways to create a skin. The simplest way is to create it in the <code>layouts/</code> directory. If you do, then you don’t have to worry about configuring Hugo to recognize it. The first place that Hugo will look for rules and files is in the <code>layouts/</code> directory so it will always find the skin.</p>
+<h2 id="step-3-import-public-key-in-java-s-default-truststore">Step 3 - Import public key in Java&rsquo;s default truststore</h2>
 
-<p>Your second choice is to create it in a sub-directory of the <code>themes/</code> directory. If you do, then you must always tell Hugo where to search for the skin. It’s extra work, though, so why bother with it?</p>
-
-<p>The difference between creating a skin in <code>layouts/</code> and creating it in <code>themes/</code> is very subtle. A skin in <code>layouts/</code> can’t be customized without updating the templates and static files that it is built from. A skin created in <code>themes/</code>, on the other hand, can be and that makes it easier for other people to use it.</p>
-
-<p>The rest of this tutorial will call a skin created in the <code>themes/</code> directory a theme.</p>
-
-<p>Note that you can use this tutorial to create a skin in the <code>layouts/</code> directory if you wish to. The main difference will be that you won’t need to update the site’s configuration file to use a theme.</p>
-
-<h3 id="the-home-page">The Home Page</h3>
+<pre><code>jdk1.8.0_91\jre\lib\security
+</code></pre>
 
 
   
