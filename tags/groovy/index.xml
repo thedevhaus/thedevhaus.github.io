@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>The Dev Haus</title>
-    <link>https://thedevhaus.github.io/</link>
-    <description>Recent content on The Dev Haus</description>
+    <title>Groovy on The Dev Haus</title>
+    <link>https://thedevhaus.github.io/tags/groovy/</link>
+    <description>Recent content in Groovy on The Dev Haus</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 17 Feb 2018 15:28:19 +1100</lastBuildDate>
+    <lastBuildDate>Sat, 10 Feb 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://thedevhaus.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://thedevhaus.github.io/tags/groovy/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Search and Replace Bash</title>
-      <link>https://thedevhaus.github.io/post/search-and-replace-bash/</link>
-      <pubDate>Sat, 17 Feb 2018 15:28:19 +1100</pubDate>
-      
-      <guid>https://thedevhaus.github.io/post/search-and-replace-bash/</guid>
-      <description> Search/replace string recursively in Linux grep -rnw ./*.* -e &amp;quot;string-to-search&amp;quot;  Replace all occurrences bash sed -i &#39;s/FROM/WITH/g&#39; filenamePattern  For e.g.
-sed -i &#39;s/ash@gmail.com/someone@outloo.com/g&#39; *.txt  </description>
-    </item>
     
     <item>
       <title>How to use Wiremock with HTTPS</title>
@@ -41,17 +31,6 @@ Wiremock although ships with default keystore but it is issues to the creator. I
 The gradle init plugin supports various basic formats for generating the project structure. For example:
 Here&amp;rsquo;s an example:
 # Create Java application directory structure gradle init --type java-application # This will generate basic project structure for a java command line application project with the standard defaults and will use JUnit as test framework.</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>https://thedevhaus.github.io/about/</link>
-      <pubDate>Sat, 17 Feb 2018 14:45:53 +1100</pubDate>
-      
-      <guid>https://thedevhaus.github.io/about/</guid>
-      <description>Hello World ! My name is Ashish and I am passionate Groovy/Java/Scala/JS/Android developer based in Melbourne, Australia. I love open source technologies and and love building software solutions.
-I have passion for clean code and well designed software solutions.
-Thru this site, I would like to share my day to day challenges and learnings. I hope this will be benefit some budding/aspiring/professional developer out there.</description>
     </item>
     
   </channel>

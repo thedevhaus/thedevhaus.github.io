@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on The Dev Haus</title>
+    <link>https://thedevhaus.github.io/tags/linux/</link>
+    <description>Recent content in Linux on The Dev Haus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 17 Feb 2018 15:28:19 +1100</lastBuildDate>
+    
+	<atom:link href="https://thedevhaus.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Search and Replace Bash</title>
+      <link>https://thedevhaus.github.io/post/search-and-replace-bash/</link>
+      <pubDate>Sat, 17 Feb 2018 15:28:19 +1100</pubDate>
+      
+      <guid>https://thedevhaus.github.io/post/search-and-replace-bash/</guid>
+      <description> Search/replace string recursively in Linux grep -rnw ./*.* -e &amp;quot;string-to-search&amp;quot;  Replace all occurrences bash sed -i &#39;s/FROM/WITH/g&#39; filenamePattern  For e.g.
+sed -i &#39;s/ash@gmail.com/someone@outloo.com/g&#39; *.txt  </description>
+    </item>
+    
+  </channel>
+</rss>

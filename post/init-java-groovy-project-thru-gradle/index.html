@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.36.1" />
 
-  <title>How to use Wiremock with HTTPS &middot; The Dev Haus</title>
+  <title>Init Java Groovy Project Thru Gradle &middot; The Dev Haus</title>
 
   
   
@@ -207,7 +207,7 @@
 
 
 <div class="header">
-  <h1>How to use Wiremock with HTTPS</h1>
+  <h1>Init Java Groovy Project Thru Gradle</h1>
   <h2></h2>
 </div>
 <div class="content">
@@ -216,7 +216,7 @@
 
   <div>
     <i class="fa fa-calendar fa-fw"></i>
-    <time>10 Feb 2018, 00:00</time>
+    <time>02 Feb 2018, 13:46</time>
   </div>
 
   
@@ -233,9 +233,7 @@
     
       <a class="post-taxonomy-tag" href="https://thedevhaus.github.io/tags/groovy">groovy</a>&nbsp;&#47;
     
-      <a class="post-taxonomy-tag" href="https://thedevhaus.github.io/tags/keytool">keytool</a>&nbsp;&#47;
-    
-      <a class="post-taxonomy-tag" href="https://thedevhaus.github.io/tags/ssl">ssl</a>
+      <a class="post-taxonomy-tag" href="https://thedevhaus.github.io/tags/gradle">gradle</a>
     
   </div>
   
@@ -245,90 +243,34 @@
 
   
 
-<h1 id="introduction">Introduction</h1>
+<h2 id="initialize-a-java-or-groovy-project-using-gradle">Initialize a Java or Groovy project using gradle</h2>
 
-<p>Wiremock is an awesome HTTP stubbing library which can be used to mock end points. It is super simple and can be used as a standalone server. The beauty is that it can be used to stub SSL endpoints making it very versatile and easier to use.</p>
+<p>Gradle does not have full fledged support for generating skeleton project structure (maven archetype). Although there is some support available for some default java/scala/groovy and related libraries.</p>
 
-<p>Wiremock although ships with default keystore but it is issues to the creator. If you really want a full fledged SSL then it is a good idea to create the new keystore and use it.</p>
+<p>The <code>gradle init</code> plugin supports various basic formats for generating the project structure. For example:</p>
 
-<h2 id="step-1-generate-a-self-signed-certificate">Step 1 - Generate a self signed certificate</h2>
+<p>Here&rsquo;s an example:</p>
 
-<p>The password for the keystore must be <strong>password</strong> as per Wiremock&rsquo;s documentation.</p>
+<pre><code># Create Java application directory structure
+gradle init --type java-application
 
-<pre><code class="language-bash">keytool.exe -genkey -alias wiremock -keyalg RSA -keysize 1024  -validity 365 -keypass password  -keystore wiremockKS.jks -storepass password
-</code></pre>
+# This will generate basic project structure for a java command line application project with the standard defaults and will use JUnit as test framework.
 
-<p>This will create a file named <code>wiremockKS.jks</code> with a self signed certificate. Add the correct hostname for certificate to be uesd on host. For Ex the following certificate can be used for <code>localhost</code> :</p>
+gradle init --type java-library
 
-<pre><code class="language-plain">
-What is your first and last name?
-  [Unknown]:  localhost
-What is the name of your organizational unit?
-  [Unknown]:  some unit
-What is the name of your organization?
-  [Unknown]:  awesome org
-What is the name of your City or Locality?
-  [Unknown]:  mel
-What is the name of your State or Province?
-  [Unknown]:  VIC
-What is the two-letter country code for this unit?
-  [Unknown]:  AU
-Is CN=localhost, OU=some unit, O=awesome org, L=mel, ST=VIC, C=AU correct?
-  [no]:  yes
-</code></pre>
+# This will generate basic project structure for a java library project (JAR) with the standard defaults and will use JUnit as test framework.
 
-<h2 id="step-2-export-the-certificate-later-to-be-imported-in-java-s-default-key-store">Step 2 -  Export the certificate (later to be imported in Java&rsquo;s default key store)</h2>
+Similarly the following types are supported:
 
-<pre><code class="language-bash">keytool -export -keystore wiremockKS.jks -alias wiremock -file wiremock-pub.cer
-</code></pre>
+gradle init --type groovy-library
+gradle init --type scala-library
 
-<h2 id="step-3-import-public-key-in-java-s-default-truststore">Step 3 - Import public key in Java&rsquo;s default truststore</h2>
+# The test framework by default is JUnit but can be overridden to use spock or testng. For example
 
-<pre><code class="language-bash">keytool -import -file wiremock-pub.cer -alias wiremock -keystore  %JAVA_HOME%\jre\lib\security\cacerts
-</code></pre>
+gradle init --type groovy-library  --test-framework spock
 
-<pre><code class="language-plain">Enter keystore password:
-Owner: CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=AU
-Issuer: CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=AU
-Serial number: 4c87a4a0
-Valid from: Fri Feb 16 13:30:03 AEDT 2018 until: Sat Feb 16 13:30:03 AEDT 2019
-Certificate fingerprints:
-         MD5:  76:03:32:8F:89:81:34:D6:78:64:5C:AF:02:6C:24:28
-         SHA1: 83:53:20:84:88:1A:F4:0F:67:8A:69:51:6D:A7:FA:63:F6:46:7C:B2
-         SHA256: 69:81:EE:87:4F:58:AE:A2:40:B8:CF:A5:41:5E:25:7C:DE:77:42:F0:3C:5E:09:83:8D:EB:05:7A:D5:9D:AF:FF
-         Signature algorithm name: SHA256withRSA
-         Version: 3
+# The mix and match of Java/Groovy can be used by using &lt;code&gt;groovy-library&lt;/code&gt;
 
-Extensions:
-
-#1: ObjectId: 2.5.29.14 Criticality=false
-SubjectKeyIdentifier [
-KeyIdentifier [
-0000: 11 5D 9E 06 42 B7 2C 9B   AA 97 A7 C9 3C 9F 55 02  .]..B.,.....&lt;.U.
-0010: FA FE 13 12                                        ....
-]
-]
-
-Trust this certificate? [no]:  yes
-Certificate was added to keystore
-</code></pre>
-
-<p>Default password for java&rsquo;s keystore is <strong>changeit</strong></p>
-
-<h2 id="step-5-start-wiremock-with-the-newly-generated-keystore-in-step-1">Step 5 Start wiremock with the newly generated keystore in Step 1</h2>
-
-<pre><code class="language-bash">java -jar wiremock-standalone-2.6.0.jar --https-port 9099 -v --https-keystore .\wiremockKS.jks
-</code></pre>
-
-<h2 id="step-6-test-with-a-client">Step 6 - Test with a client</h2>
-
-<p>I tested with quick and dirty Groovy script and voila..got the response</p>
-
-<pre><code class="language-java">String postResult
-((HttpURLConnection)new URL('https://localhost:9099/test').openConnection()).with {
-    requestMethod = 'POST'
-    postResult = inputStream.text
-}
 </code></pre>
 
 
@@ -336,14 +278,8 @@ Certificate was added to keystore
 <div class="prev-next-post pure-g">
   <div class="pure-u-1-24" style="text-align: left;">
     
-    <a href="https://thedevhaus.github.io/post/init-java-groovy-project-thru-gradle/"><i class="fa fa-chevron-left"></i></a>
-    
   </div>
   <div class="pure-u-10-24">
-    
-    <nav class="prev">
-      <a href="https://thedevhaus.github.io/post/init-java-groovy-project-thru-gradle/">Init Java Groovy Project Thru Gradle</a>
-    </nav>
     
   </div>
   <div class="pure-u-2-24">
@@ -352,13 +288,13 @@ Certificate was added to keystore
   <div class="pure-u-10-24">
     
     <nav class="next">
-      <a href="https://thedevhaus.github.io/post/search-and-replace-bash/">Search and Replace Bash</a>
+      <a href="https://thedevhaus.github.io/post/my-first-post/">How to use Wiremock with HTTPS</a>
     </nav>
     
   </div>
   <div class="pure-u-1-24" style="text-align: right;">
     
-    <a href="https://thedevhaus.github.io/post/search-and-replace-bash/"><i class="fa fa-chevron-right"></i></a>
+    <a href="https://thedevhaus.github.io/post/my-first-post/"><i class="fa fa-chevron-right"></i></a>
     
   </div>
 </div>

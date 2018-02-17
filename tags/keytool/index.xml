@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Keytool on The Dev Haus</title>
+    <link>https://thedevhaus.github.io/tags/keytool/</link>
+    <description>Recent content in Keytool on The Dev Haus</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Feb 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://thedevhaus.github.io/tags/keytool/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to use Wiremock with HTTPS</title>
+      <link>https://thedevhaus.github.io/post/my-first-post/</link>
+      <pubDate>Sat, 10 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://thedevhaus.github.io/post/my-first-post/</guid>
+      <description>Introduction Wiremock is an awesome HTTP stubbing library which can be used to mock end points. It is super simple and can be used as a standalone server. The beauty is that it can be used to stub SSL endpoints making it very versatile and easier to use.
+Wiremock although ships with default keystore but it is issues to the creator. If you really want a full fledged SSL then it is a good idea to create the new keystore and use it.</description>
+    </item>
+    
+  </channel>
+</rss>
